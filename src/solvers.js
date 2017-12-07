@@ -20,28 +20,72 @@
        //   [0000]]
 window.findNRooksSolution = function(n) {
   var board = new Board({n: n});
+
   var at = board.attributes;
   var solution = [];
   for (key in at) {
     solution.push(at[key]);
   }
   solution.splice(solution.length - 1, 1);
-  var count = 0;
-  for (var row = 0; row < n; row++) {
-    for (var column = 0; column < n; column++) {
-      if (!(board.hasColConflictAt(column)) && !(board.hasRowConflictAt(row))) {
-        solution[row][column] = 1;
-        console.log(board);
-      } 
+  
+  var recursion = function(row) {
+    //if row === n+1 end recursion
+    if (row === n) { 
+      return;
     }
-  }
+    //iterate over every item
+    for (var currColumn = 0; currColumn < n; currColumn++) {
+      //toggle piece at row[i]
+      board.togglePiece(row, currColumn);
+      if (!board.hasAnyRooksConflicts()) {
+        recursion(row + 1);
+        break;
+      }
+      board.togglePiece(row, currColumn);
+    }
+      //check if board doesnt hasAnyRookConflicts
+        //call recursion(row+1)
+  };
+  
+  recursion(0);
+    
   console.log('Single solution for ' + n + ' rooks:', JSON.stringify(solution));
   return solution;
 };
 
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
-  var solutionCount = undefined; //fixme
+  var solutionCount = 0;
+  var board = new Board({n: n});
+
+  var at = board.attributes;
+  var solution = [];
+  for (key in at) {
+    solution.push(at[key]);
+  }
+  solution.splice(solution.length - 1, 1);
+  
+  var recursion = function(row) {
+    //if row === n+1 end recursion
+    if (row === n) { 
+      return;
+    }
+    //iterate over every item
+    for (var currColumn = 0; currColumn < n; currColumn++) {
+      //toggle piece at row[i]
+      board.togglePiece(row, currColumn);
+      if (!board.hasAnyRooksConflicts()) {
+        recursion(row + 1);
+        break;
+      }
+      board.togglePiece(row, currColumn);
+    }
+      //check if board doesnt hasAnyRookConflicts
+        //call recursion(row+1)
+  };
+  
+  recursion(0);
+    
 
   console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
   return solutionCount;
