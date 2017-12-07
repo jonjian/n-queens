@@ -85,7 +85,7 @@
         if (row[i] === 1 ) {
           count++;
         }
-        if (count > 1) {
+        if (count > 0) {
           return true;
         }
       } 
@@ -115,7 +115,7 @@
         if (row[i][colIndex] === 1) {
           count++;
         }
-        if (count > 1) {
+        if (count > 0) {
           return true;
         }
       }
@@ -146,9 +146,9 @@
         if (row[i][dIndex] === 1) {
           count++;
         }
-        if (count > 1) {
-          return true;
-        }
+      }
+      if (count > 1) {
+        return true;
       }
       return false;
     },
