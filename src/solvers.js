@@ -56,6 +56,35 @@ window.findNRooksSolution = function(n) {
 // return the number of nxn chessboards that exist, with n rooks placed such that none of them can attack each other
 window.countNRooksSolutions = function(n) {
   var solutionCount = 0;
+  
+  var board = new Board({n: n});
+  
+  var recursion = function(row) {
+    //if row === n+1 end recursion
+    if (row === n) { 
+      solutionCount++;
+      return;
+    }
+    //iterate over every item
+    for (var currColumn = 0; currColumn < n; currColumn++) {
+      //toggle piece at row[i]
+      board.togglePiece(row, currColumn);
+      if (!board.hasAnyRooksConflicts()) {
+        recursion(row + 1);
+      }
+      board.togglePiece(row, currColumn);
+    }
+  };
+  
+  recursion(0);
+    
+  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
+  return solutionCount;
+};
+
+// return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
+window.findNQueensSolution = function(n) {
+  
   var board = new Board({n: n});
 
   var at = board.attributes;
@@ -64,7 +93,6 @@ window.countNRooksSolutions = function(n) {
     solution.push(at[key]);
   }
   solution.splice(solution.length - 1, 1);
-  
   var recursion = function(row) {
     //if row === n+1 end recursion
     if (row === n) { 
@@ -74,27 +102,15 @@ window.countNRooksSolutions = function(n) {
     for (var currColumn = 0; currColumn < n; currColumn++) {
       //toggle piece at row[i]
       board.togglePiece(row, currColumn);
-      if (!board.hasAnyRooksConflicts()) {
+      if (!board.hasAnyQueensConflicts()) {
         recursion(row + 1);
-        break;
       }
       board.togglePiece(row, currColumn);
     }
-      //check if board doesnt hasAnyRookConflicts
-        //call recursion(row+1)
   };
   
   recursion(0);
     
-
-  console.log('Number of solutions for ' + n + ' rooks:', solutionCount);
-  return solutionCount;
-};
-
-// return a matrix (an array of arrays) representing a single nxn chessboard, with n queens placed such that none of them can attack each other
-window.findNQueensSolution = function(n) {
-  var solution = undefined; //fixme
-
   console.log('Single solution for ' + n + ' queens:', JSON.stringify(solution));
   return solution;
 };

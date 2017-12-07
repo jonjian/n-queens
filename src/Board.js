@@ -143,8 +143,10 @@
       var row = this.attributes;
       var count = 0;
       for (var i = 0, dIndex = majorDiagonalColumnIndexAtFirstRow; i < this.attributes.n; i++, dIndex++) {
-        if (row[i][dIndex] === 1) {
-          count++;
+        if (this._isInBounds(i, dIndex)) {  
+          if (row[i][dIndex] === 1) {
+            count++;
+          }
         }
       }
       if (count > 1) {
@@ -158,10 +160,10 @@
       for (var i = 0; i < this.attributes.n; i++) {
         if (this.hasMajorDiagonalConflictAt(i)) {
           return true;
-        } 
+        }
         if (this.hasMajorDiagonalConflictAt(-i)) {
           return true;
-        }
+        } 
       } 
       return false;
     },
@@ -178,12 +180,14 @@
       var count = 0;
       // start at MDCIF row zero
       for (var row = 0, dIndex = minorDiagonalColumnIndexAtFirstRow; row < size; row++, dIndex--) {
-        if (board[row][dIndex] === 1) {
-          count++;
+        if (this._isInBounds(row, dIndex)) {
+          if (board[row][dIndex] === 1) {
+            count++;
+          }
         }
-        if (count > 1) {
-          return true;
-        }
+      }
+      if (count > 1) {
+        return true;
       }
       return false;
     },
@@ -194,7 +198,7 @@
         if (this.hasMinorDiagonalConflictAt(i)) {
           return true;
         }
-        if (this.hasMinorDiagonalConflictAt(i + 3)) {
+        if (this.hasMinorDiagonalConflictAt(i + (this.attributes.n))) {
           return true;
         }
       }
